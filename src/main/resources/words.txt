@@ -1,0 +1,10 @@
+apple,jabłko,Apfel
+car,auto,Auto
+house,dom,Haus
+dog,pies,Hund
+cat,kot,Katze
+book,ksiazka,Buch
+sun,słońce,Sonne
+moon,księżyc,Mond
+water,woda,Wasser
+tree,drzewo,Baum
