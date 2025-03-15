@@ -1,18 +1,70 @@
 package org.example.flashcardsapp.service;
 
+import org.example.flashcardsapp.entries.Entry;
 import org.example.flashcardsapp.repository.EntryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class FileService {
-    EntryRepository entryRepository;
-
+    private final EntryRepository entryRepository;
+    @Autowired
     public FileService(EntryRepository entryRepository) {
         this.entryRepository = entryRepository;
     }
 
-    private void readFromFile(){
+    public void readFromFile(){
         //convert txt to objects
-        //add to list
+        try {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("flashcards.txt");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+            String line;
+            while((line = br.readLine()) != null){
+                String[] parts = line.split(",");
+
+                if(parts.length == 3){
+                    String english = parts[0].trim();
+                    String polish = parts[1].trim();
+                    String german = parts[2].trim();
+                    Entry entry = new Entry(english, polish, german);
+                    entryRepository.addEntry(entry);
+                }else{
+                    System.out.println("! Can not resolve line format: " + line);
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addWord(Entry entry){
+        entryRepository.addEntry(entry);
+        addToFile(entry);
+    }
+
+    private void addToFile(Entry entry){
+        try {
+            FileWriter fileWriter = new FileWriter("src\\main\\resources\\flashcards.txt", true);
+            BufferedWriter buffWriter = new BufferedWriter(fileWriter);
+            PrintWriter writer = new PrintWriter(buffWriter);
+            String english = entry.getEnglish();
+            String polish = entry.getPolish();
+            String german = entry.getGerman();
+
+            writer.print("\n"+english+","+polish+","+german);
+
+            writer.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

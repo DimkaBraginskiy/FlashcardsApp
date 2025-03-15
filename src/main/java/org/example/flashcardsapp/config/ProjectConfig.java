@@ -1,8 +1,16 @@
 package org.example.flashcardsapp.config;
 
+import org.example.flashcardsapp.entries.Entry;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Scanner;
 
 @Configuration
 public class ProjectConfig {
-    
+    @Bean
+    Scanner scanner() {
+        return new Scanner(System.in);
+    }
 }

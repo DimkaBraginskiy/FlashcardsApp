@@ -15,9 +15,7 @@ public class FlashcardsApp {
 
 		FlashcardsController flashcardsController = context.getBean(FlashcardsController.class);
 
-		flashcardsController.startDialog();
-
-
+		flashcardsController.start();
 	}
 
 }

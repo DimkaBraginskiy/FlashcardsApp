@@ -1,3 +1,4 @@
+english,polish,german
 apple,jabłko,Apfel
 car,auto,Auto
 house,dom,Haus
@@ -8,3 +9,5 @@ sun,słońce,Sonne
 moon,księżyc,Mond
 water,woda,Wasser
 tree,drzewo,Baum
+Tea,Herbata,Tee
+Football,Piłka nożna,Fussball
