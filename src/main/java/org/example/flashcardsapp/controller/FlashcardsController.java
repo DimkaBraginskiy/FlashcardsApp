@@ -44,7 +44,7 @@ public class FlashcardsController {
                         secondDialog();
                         break;
                     case 3:
-                        thirdDialog(scanner);
+                        thirdDialog(scanner, randomDecision());
                         break;
                     case 4:
                         System.out.println("Exiting program...");
@@ -60,6 +60,25 @@ public class FlashcardsController {
                 }
             }
         }
+    }
+
+    private boolean randomDecision(){
+        boolean isValid = false;
+        do{
+            System.out.println("Would you like to get duplicate random flashcards ot not?\n" +
+                    "1 -> Yes\n" +
+                    "2 -> No\n");
+            int input = scanner.nextInt();
+            if(input == 1){
+                return true;
+            }else if(input == 2){
+                return false;
+            }else{
+                System.out.println("Wrong input.");
+                isValid = false;
+            }
+        }while(!isValid);
+        return false;
     }
 
     private void printInfo(){
@@ -99,7 +118,10 @@ public class FlashcardsController {
         }
     }
 
-    private void thirdDialog(Scanner scanner){
+    private void thirdDialog(Scanner scanner, boolean randomPopup){
+        String polish;
+        String german;
+
         List<Entry> entries = entryRepository.getAllEntries();
         int amount = 0;
         int score = 0;
@@ -128,21 +150,33 @@ public class FlashcardsController {
 
         for(int i = 0; i < amount; i++){
             System.out.println("\nQuestion " + (i+1));
-            System.out.println("Write Polish translation for: " + entries.get(i).getEnglish());
-            String polish = scanner.nextLine().trim();
-
-            System.out.println("Write German translation for: " + entries.get(i).getEnglish());
-            String german = scanner.nextLine().trim();
-
-            if(entries.get(i).getPolish().equalsIgnoreCase(polish) && entries.get(i).getGerman().equalsIgnoreCase(german)){
-                System.out.println("Correct!");
-                score++;
+            if(randomPopup){
+                score += askQuestion(entryRepository.getRandomEntry());
             }else{
-                System.out.println("Incorrect!");
-                System.out.println("Your Polish answer: " + polish + "; Correct answer: " + entries.get(i).getPolish());
-                System.out.println("Your German answer: " + german + "; Correct answer: " + entries.get(i).getGerman());
+                score += askQuestion(entries.get(i));
             }
         }
         System.out.println("You scored: " + score+"/"+amount+"; Accuracy: " + (score*100)/amount+"%.");
+    }
+
+    private int askQuestion(Entry entry){
+        String polish;
+        String german;
+
+        System.out.println("Write Polish translation for: " + entry.getEnglish());
+        polish = scanner.nextLine().trim();
+
+        System.out.println("Write German translation for: " + entry.getEnglish());
+        german = scanner.nextLine().trim();
+
+        if(entry.getPolish().equalsIgnoreCase(polish) && entry.getGerman().equalsIgnoreCase(german)){
+            System.out.println("Correct!");
+            return 1;
+        }else{
+            System.out.println("Incorrect!");
+            System.out.println("Your Polish answer: " + polish + "; Correct answer: " + entry.getPolish());
+            System.out.println("Your German answer: " + german + "; Correct answer: " + entry.getGerman());
+            return 0;
+        }
     }
 }

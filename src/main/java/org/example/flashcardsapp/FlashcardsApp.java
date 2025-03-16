@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class FlashcardsApp {
-
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(FlashcardsApp.class, args);
 
