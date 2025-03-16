@@ -47,12 +47,8 @@ public class FileService {
         }
     }
 
-    public void addWord(Entry entry){
-        entryRepository.addEntry(entry);
-        addToFile(entry);
-    }
 
-    private void addToFile(Entry entry){
+    public void addToFile(Entry entry){
         try {
             FileWriter fileWriter = new FileWriter("src\\main\\resources\\flashcards.txt", true);
             BufferedWriter buffWriter = new BufferedWriter(fileWriter);

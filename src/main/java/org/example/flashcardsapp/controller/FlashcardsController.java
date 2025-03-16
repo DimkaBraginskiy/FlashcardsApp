@@ -19,17 +19,17 @@ public class FlashcardsController {
     private final FileService fileService;
     private final EntryRepository entryRepository;
     private final DisplayService displayService;
+    private final Scanner scanner;
 
-    public FlashcardsController(FileService fileService, EntryRepository entryRepository, DisplayService displayService) {
+    public FlashcardsController(FileService fileService, EntryRepository entryRepository, DisplayService displayService, Scanner scanner) {
         this.fileService = fileService;
         this.entryRepository = entryRepository;
         this.displayService = displayService;
+        this.scanner = scanner;
     }
 
     public void start(){
         fileService.readFromFile();
-
-        Scanner scanner = new Scanner(System.in);
 
         while(true){
             printInfo();
@@ -79,7 +79,13 @@ public class FlashcardsController {
         System.out.println("Enter a translation in German:");
         String german = scanner.nextLine().trim();
         Entry entry = new Entry(english,polish,german);
-        fileService.addWord(entry);
+
+        if(!entryRepository.getAllEntries().contains(entry)){
+            fileService.addToFile(entry);
+            entryRepository.addEntry(entry);
+        }else{
+            System.out.println("Entry already exists");
+        }
         System.out.println("The word was added to the dictionary.");
     }
 
@@ -99,7 +105,7 @@ public class FlashcardsController {
         int score = 0;
         boolean valid = false;
 
-        Collections.shuffle(entries);//Randomizing Entries order.
+        Collections.shuffle(entries);//Shuffling so Entries order will not repeat.
 
 
         do{
@@ -137,6 +143,6 @@ public class FlashcardsController {
                 System.out.println("Your German answer: " + german + "; Correct answer: " + entries.get(i).getGerman());
             }
         }
-        System.out.println("You scored: " + score+"/"+amount);
+        System.out.println("You scored: " + score+"/"+amount+"; Accuracy: " + (score*100)/amount+"%.");
     }
 }
