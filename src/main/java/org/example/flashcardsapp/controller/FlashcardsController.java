@@ -2,6 +2,7 @@ package org.example.flashcardsapp.controller;
 
 import org.example.flashcardsapp.entries.Entry;
 import org.example.flashcardsapp.repository.EntryRepository;
+import org.example.flashcardsapp.service.DisplayService;
 import org.example.flashcardsapp.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,10 +18,12 @@ import java.util.Scanner;
 public class FlashcardsController {
     private final FileService fileService;
     private final EntryRepository entryRepository;
-    @Autowired
-    public FlashcardsController(FileService fileService, EntryRepository entryRepository) {
+    private final DisplayService displayService;
+
+    public FlashcardsController(FileService fileService, EntryRepository entryRepository, DisplayService displayService) {
         this.fileService = fileService;
         this.entryRepository = entryRepository;
+        this.displayService = displayService;
     }
 
     public void start(){
@@ -83,7 +86,10 @@ public class FlashcardsController {
     private void secondDialog(){
         List<Entry> entries = entryRepository.getAllEntries();
         for(Entry entry : entries){
-            System.out.println(entry);
+            String english = displayService.format(entry.getEnglish());
+            String polish = displayService.format(entry.getPolish());
+            String german = displayService.format(entry.getGerman());
+            System.out.println("English: " + english + ", Polish: " + polish + ", German: " + german);
         }
     }
 

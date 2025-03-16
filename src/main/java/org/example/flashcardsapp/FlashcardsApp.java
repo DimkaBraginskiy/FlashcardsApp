@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-@ConfigurationPropertiesScan
 public class FlashcardsApp {
 
 	public static void main(String[] args) {

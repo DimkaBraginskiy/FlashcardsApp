@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: lowercase
+---
+spring:
+  config:
+    activate:
+      on-profile: uppercase
+
+app:
+  diplay:
+    case: uppercase
+---
+spring:
+  config:
+    activate:
+      on-profile: lowercase
+
+app:
+  diplay:
+    case: lowercase

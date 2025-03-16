@@ -11,3 +11,4 @@ water,woda,Wasser
 tree,drzewo,Baum
 Tea,Herbata,Tee
 Football,Piłka nożna,Fussball
+Face,Twarz,Gesicht
