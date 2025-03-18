@@ -48,7 +48,7 @@ public class FileService {
     }
 
 
-    public void addToFile(Entry entry){
+    public void addWord(Entry entry){
         try {
             FileWriter fileWriter = new FileWriter("src\\main\\resources\\flashcards.txt", true);
             BufferedWriter buffWriter = new BufferedWriter(fileWriter);
@@ -60,6 +60,8 @@ public class FileService {
             writer.print("\n"+english+","+polish+","+german);
 
             writer.close();
+
+            entryRepository.addEntry(entry);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

@@ -99,14 +99,24 @@ public class FlashcardsController {
         String german = scanner.nextLine().trim();
         Entry entry = new Entry(english,polish,german);
 
-        if(!entryRepository.getAllEntries().contains(entry)){
-            fileService.addToFile(entry);
-            entryRepository.addEntry(entry);
-        }else{
-            System.out.println("Entry already exists");
+        boolean isDuplicate = false;
+        for(Entry OrigEntry : entryRepository.getAllEntries()){
+            if(OrigEntry.getEnglish().equalsIgnoreCase(english)
+                    && OrigEntry.getPolish().equalsIgnoreCase(polish)
+                    && OrigEntry.getGerman().equalsIgnoreCase(german)){
+                isDuplicate = true;
+                break;
+            }
         }
-        System.out.println("The word was added to the dictionary.");
+
+        if(isDuplicate){
+            System.out.println("Can not add a word as it already exists.");
+        }else{
+            fileService.addWord(entry);
+            System.out.println("The word was added to the dictionary.");
+        }
     }
+
 
     private void secondDialog(){
         List<Entry> entries = entryRepository.getAllEntries();
